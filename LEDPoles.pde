@@ -375,7 +375,7 @@ void neutral(void)
 //Demo Routine
 void demo(void)
 {
-  // This routine is to verify LEDs are operational - like a POST operation.
+  // This routine is to verify LEDs are operational - (A POST operation)
   int x=0;
   int red=1;
   int blue=1;
