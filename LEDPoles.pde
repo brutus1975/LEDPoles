@@ -24,14 +24,14 @@
 #define opRed 10 //LED GND pin for Red
 #define opBlue 11 //LED GND pin for Blue
 
-#define opLedFlash 9 //LED Pin for 'Arming' LED
+#define opLedFlash 13 //LED Pin for 'Arming' LED
 
-#define ipRed 0 //Switch Input for Red (momentary connection to GND)
-#define ipBlue 1 //Switch Input for Blue (momentary connection to GND)
+#define ipRed 14 //Switch Input for Red (momentary connection to GND)
+#define ipBlue 15 //Switch Input for Blue (momentary connection to GND)
 
 int current_team = 0;  //Who has control?  0=Nobody 1=red 2=blue
 
-int timetocap = 60*1000;  //How long to hold switch to cap point
+int timetocap = 5*1000;  //How long to hold switch to cap point
 int commit_time = 3000;  //Each team gets a 3 second guarantee cap time
 
 //Function Declarations
@@ -129,31 +129,31 @@ void flash_routine(int segment)
       break;
     
     case 2:
-      digitalWrite(op1,HIGH);
+      digitalWrite(op2,HIGH);
       break;
     
     case 3:
-      digitalWrite(op1,HIGH);
+      digitalWrite(op3,HIGH);
       break;
     
     case 4:
-      digitalWrite(op1,HIGH);
+      digitalWrite(op4,HIGH);
       break;
     
     case 5:
-      digitalWrite(op1,HIGH);
+      digitalWrite(op5,HIGH);
       break;
     
     case 6:
-      digitalWrite(op1,HIGH);
+      digitalWrite(op6,HIGH);
       break;
     
     case 7:
-      digitalWrite(op1,HIGH);
+      digitalWrite(op7,HIGH);
       break;
     
     case 8:
-      digitalWrite(op1,HIGH);
+      digitalWrite(op8,HIGH);
       break;
       
     case 0:
@@ -292,8 +292,8 @@ void neutral(void)
   int red=1;
   int blue=1;
   int arming;
-  boolean redFlag;
-  boolean blueFlag;
+  int redFlag=0;
+  int blueFlag=0;
   unsigned long hold_time;
   
   
@@ -308,7 +308,7 @@ void neutral(void)
     red=digitalRead(ipRed);
     blue=digitalRead(ipBlue);
   }  //Either red or blue has an input
-  if (red == 1)
+  if (red == 0)
   {
     redFlag=1;
   }
@@ -356,12 +356,11 @@ void neutral(void)
   else
   {
     //Player satisfied time constraint - cap point
-    if (redFlag)
+    if (redFlag == 1)
     {
       current_team=1;
     }
-    
-    if (blueFlag)
+    else
     {
       current_team=2;
     }
@@ -382,6 +381,7 @@ void demo(void)
   while ((red*blue) == 1)
   {
     x++;
+    
     if (x > 8)
     {
       x=1;
@@ -390,11 +390,11 @@ void demo(void)
     flash_routine(x);
     digitalWrite(opRed,LOW);
     digitalWrite(opLedFlash,HIGH);
-    delay(125);
+    delay(50);
     digitalWrite(opRed,HIGH);
     digitalWrite(opBlue,LOW);
     digitalWrite(opLedFlash,LOW);
-    delay(125);
+    delay(50);
     digitalWrite(opBlue,HIGH);
     
     red=digitalRead(ipRed);
